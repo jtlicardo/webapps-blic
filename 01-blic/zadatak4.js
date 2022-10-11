@@ -4,35 +4,41 @@ let obj = {
   3: [12, 11, "C"],
 }
 
+let arraySumNumbers = (arr) => {
+  let sum = 0
+  for (let el of arr) {
+    if (Number.isInteger(el)) sum += el
+  }
+  return sum
+}
+
+let arrayRemoveIntegers = (arr) => {
+  let temp = []
+  for (let el of arr) {
+    if (!Number.isInteger(el)) temp.push(el)
+  }
+  return temp
+}
+
 let func = (obj) => {
-  values = []
-  for (const [key, value] of Object.entries(obj)) {
-    values.push(value)
-  }
-  let arrays = []
-  for (let el of values) {
-    if (Array.isArray(el)) arrays.push(el)
-  }
-  for (let array of arrays) {
-    let sum = 0
-    for (let el of array) {
-      if (Number.isInteger(el)) {
-        sum += el
+  let keys = Object.keys(obj)
+  let values = Object.values(obj)
+  let newValues = []
+  for (let value of values) {
+    if (Array.isArray(value)) {
+      let sum = arraySumNumbers(value)
+      let newArr = arrayRemoveIntegers(value)
+      if (sum % 2 === 0) {
+        newArr.push(Math.sqrt(sum).toFixed(2))
       }
-    }
-    array.push(sum)
+      newValues.push(newArr)
+    } else newValues.push(value)
   }
-  let tempArrays = []
-  let tempArray = []
-  for (let array of arrays) {
-    let lastNum = array.pop()
-    for (let el of array) {
-      if (!Number.isInteger(el)) tempArray.push(el)
-    }
-    tempArray.push(lastNum)
-    tempArrays.push(tempArray)
+  const newObject = {}
+  for (let i = 0; i < keys.length; i++) {
+    newObject[keys[i]] = newValues[i]
   }
-  return tempArrays
+  return newObject
 }
 
 console.log(func(obj))
